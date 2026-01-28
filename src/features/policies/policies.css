@@ -1,0 +1,40 @@
+.policies-toolbar {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.policies-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.policies-table th,
+.policies-table td {
+  padding: 8px;
+  border-bottom: 1px solid #e5e7eb;
+  text-align: left;
+}
+
+.policies-table tr:hover {
+  background: #f3f4f6;
+  cursor: pointer;
+}
+
+.status-badge {
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 12px;
+}
+
+.status-active {
+  background: #d1fae5;
+}
+
+.status-pending {
+  background: #fef3c7;
+}
+
+.status-lapsed {
+  background: #e5e7eb;
+}
