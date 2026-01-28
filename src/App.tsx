@@ -1,11 +1,12 @@
-import './App.css'
-import { AppRoutes } from './routes/AppRoutes'
+import { AppRoutes } from "@/app/routes/AppRoutes";
+import { AppLayout } from "@/shared/components/layout/AppLayout";
 
 function App() {
-
-  return (
-    <AppRoutes/>
-  )
+	return (
+		<AppLayout>
+			<AppRoutes />
+		</AppLayout>
+	);
 }
 
-export default App
+export default App;

@@ -1,0 +1,73 @@
+.app-shell {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.app-header {
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 0 16px;
+  background: #ffffff;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.app-title {
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+}
+
+.user-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 10px;
+  font-size: 12px;
+  border: 1px solid #e5e7eb;
+  border-radius: 999px;
+  background: #f9fafb;
+}
+
+.app-body {
+  flex: 1;
+  display: flex;
+  min-height: 0; 
+}
+
+.app-sidebar {
+  width: 220px;
+  background: #ffffff;
+  border-right: 1px solid #e5e7eb;
+  padding: 12px;
+}
+
+.nav {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.nav-link {
+  padding: 10px 10px;
+  border-radius: 8px;
+  font-size: 14px;
+}
+
+.nav-link:hover {
+  background: #f3f4f6;
+}
+
+.nav-link--active {
+  background: #e5e7eb;
+  font-weight: 600;
+}
+
+.app-main {
+  flex: 1;
+  min-width: 0;
+  padding: 16px;
+  overflow: auto;
+}

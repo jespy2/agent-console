@@ -1,8 +1,8 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
 
-import { PoliciesPage } from '../features/policies/pages/PoliciesPage';
-import { CasesPage } from '../features/cases/pages/CasesPage';
-import { SettingsPage } from '../features/settings/pages/SettingsPage';
+import { PoliciesPage } from '../../features/policies/pages/PoliciesPage';
+import { CasesPage } from '../../features/cases/pages/CasesPage';
+import { SettingsPage } from '../../features/settings/pages/SettingsPage';
 
 export const AppRoutes = () => {
   return (
