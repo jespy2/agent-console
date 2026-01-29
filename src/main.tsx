@@ -1,14 +1,17 @@
+import "@/app/styles/global.css";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
 import App from "./App.tsx";
+import { AppProviders } from "./app/providers.tsx";
 import "./index.css";
-import "@/app/styles/global.css"
 
 createRoot(document.getElementById("root")!).render(
 	<StrictMode>
-		<BrowserRouter>
-			<App />
-		</BrowserRouter>
+		<AppProviders>
+			<BrowserRouter>
+				<App />
+			</BrowserRouter>
+		</AppProviders>
 	</StrictMode>,
 );
