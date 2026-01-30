@@ -1,7 +1,7 @@
 import { baseQuery } from "@/shared/api/baseQuery";
 import { createApi } from "@reduxjs/toolkit/query/react";
-import type { Policy, PolicyStatus } from "../types";
 import { MOCK_POLICIES } from "../mockPolicies";
+import type { Policy, PolicyStatus } from "../types";
 
 export interface GetPoliciesArgs {
 	search: string;
@@ -89,20 +89,72 @@ export const policiesApi = createApi({
 					: [{ type: "Policies", id: "List" }],
 		}),
 
+		// getPolicy: builder.query<Policy, string>({
+		// 	query: (id) => `/policies/${id}`,
+		// 	providesTags: (_result, _err, id) => [{ type: "Policy", id }],
+		// }),
+
+		// Temp for mockdata
 		getPolicy: builder.query<Policy, string>({
-			query: (id) => `/policies/${id}`,
-			providesTags: (_result, _err, id) => [{ type: "Policies", id }],
+			queryFn: async (id) => {
+				const policy = MOCK_POLICIES.find((p) => p.id === id);
+
+				if (!policy) {
+					return {
+						error: {
+							status: 404,
+							data: { message: "Policy not found" },
+						} as any,
+					};
+				}
+
+				return { data: policy };
+			},
+			providesTags: (_result, _err, id) => [{ type: "Policy", id }],
 		}),
 
+		// updatePolicyStatus: builder.mutation<
+		// 	Policy,
+		// 	{ id: string; status: PolicyStatus }
+		// >({
+		// 	query: ({ id, status }) => ({
+		// 		url: `/policies/${id}`,
+		// 		method: "PATCH",
+		// 		body: { status },
+		// 	}),
+		// 	invalidatesTags: (_result, _err, { id }) => [
+		// 		{ type: "Policy", id },
+		// 		{ type: "Policies", id: "List" },
+		// 	],
+		// }),
+
+		// Temp for mock data
 		updatePolicyStatus: builder.mutation<
 			Policy,
 			{ id: string; status: PolicyStatus }
 		>({
-			query: ({ id, status }) => ({
-				url: `/policies/${id}`,
-				method: "PATCH",
-				body: { status },
-			}),
+			queryFn: async ({ id, status }) => {
+				const idx = MOCK_POLICIES.findIndex((p) => p.id === id);
+
+				if (idx === -1) {
+					return {
+						error: {
+							status: 404,
+							data: { message: "Policy not found" },
+						} as any,
+					};
+				}
+
+				// update in place for interview prep realism
+				MOCK_POLICIES[idx] = {
+					...MOCK_POLICIES[idx],
+					status,
+					lastUpdated: new Date().toISOString(),
+				};
+
+				return { data: MOCK_POLICIES[idx] };
+			},
+
 			invalidatesTags: (_result, _err, { id }) => [
 				{ type: "Policy", id },
 				{ type: "Policies", id: "List" },

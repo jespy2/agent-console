@@ -27,6 +27,9 @@ export const PoliciesTable = ({ policies, onSelect }: PoliciesTableProps) => {
             key={policy.id}
             tabIndex={0}
             onClick={() => onSelect(policy.id)}
+            onKeyDown={(e) => { 
+              if (e.key === 'Enter' || e.key === ' ') onSelect(policy.id);
+            }}
           >
             <td>{policy.holderName}</td>
             <td>{policy.policyNumber}</td>

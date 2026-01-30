@@ -6,8 +6,10 @@ import { useGetPoliciesQuery } from "../api/policiesApi";
 import "../policies.css";
 import { setPage, setSearch, setStatus } from "../state/policiesUiSlice";
 import { selectPoliciesFilters } from "../state/selectors";
+import { useNavigate } from "react-router-dom";
 
 export const PoliciesPage = () => {
+  const navigate = useNavigate();
 	const dispatch = useAppDispatch();
 	const { search, status, page, limit } = useAppSelector(selectPoliciesFilters);
 
@@ -45,7 +47,7 @@ export const PoliciesPage = () => {
 				<>
 					<PoliciesTable
 						policies={data?.items ?? []}
-						onSelect={(id) => console.log("Selected", id)}
+						onSelect={(id) => navigate(`/policies/${id}`)}
           />
           
           <div style={{ marginTop: 12, display: 'flex', gap: 8 }}>
