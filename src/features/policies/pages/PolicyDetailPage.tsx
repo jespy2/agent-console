@@ -1,3 +1,5 @@
+import type { ApiError } from "@/shared/api/types";
+import { Modal } from "@/shared/components/Ui/Modal";
 import { useEffect, useRef, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import {
@@ -5,8 +7,6 @@ import {
 	useUpdatePolicyStatusMutation,
 } from "../api/policiesApi";
 import type { PolicyStatus } from "../types";
-import { Modal } from "@/shared/components/Ui/Modal";
-import type { ApiError } from "@/shared/api/types";
 
 export const PolicyDetailPage = () => {
 	const { policyId } = useParams<{ policyId: string }>();
@@ -24,6 +24,7 @@ export const PolicyDetailPage = () => {
 	] = useUpdatePolicyStatusMutation();
 
 	const [status, setStatus] = useState<PolicyStatus>("Active");
+	const [showSuccess, setShowSuccess] = useState(false);
 	const [isCaseModalOpen, setIsCaseModalOpen] = useState(false);
 
 	const openCaseBtnRef = useRef<HTMLButtonElement | null>(null);
@@ -39,13 +40,14 @@ export const PolicyDetailPage = () => {
 		if (data) setStatus(data.status);
 	}, [data]);
 
-	// disable 'save' after success for a moment
+	// disable 'save' after success and then clear status updated message for a moment
 	useEffect(() => {
-		if (isSuccess) {
-			const t = setTimeout(() => { }, 1000);
-			return () => clearTimeout(t);
-		}
-	}, [isSuccess])
+		if (!isSuccess) return;
+		
+		setShowSuccess(true);
+		const t = setTimeout(() => setShowSuccess(false), 5000);
+		return () => clearTimeout(t);		
+	}, [isSuccess]);
 
 	if (!policyId) {
 		return (
@@ -139,9 +141,17 @@ export const PolicyDetailPage = () => {
 					{isSaving ? "Saving..." : "Save"}
 				</button>
 
-				{isSuccess && <p>Status updated.</p>}
+				{/* Inline status for the mutation */}
+				<div className='inline-status' aria-live='polite'>
+					{isSaving && <p>Saving…</p>}
+					{showSuccess && <p>Status updated.</p>}
+				</div>
 
-				{saveError && <p role='alert'>Could not update status.</p>}
+				{saveError && (
+					<p role='alert'>
+						{(saveError as ApiError).message ?? "Could not update status."}
+					</p>
+				)}
 			</div>
 			<button type='button' ref={openCaseBtnRef} onClick={openModal}>
 				Open Case
