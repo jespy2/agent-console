@@ -19,7 +19,10 @@ export default defineConfig([
       parser: tseslint.parser,
       ecmaVersion: 2020,
       sourceType: "module",
-      globals: globals.browser,
+      globals: {
+        ...globals.browser,
+        ...globals.vitest,
+      },
       parserOptions: {
         ecmaFeatures: { jsx: true },
         projectService: true,

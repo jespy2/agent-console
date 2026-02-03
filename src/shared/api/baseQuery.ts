@@ -3,8 +3,8 @@ import { fetchBaseQuery, retry } from "@reduxjs/toolkit/query/react";
 export const rawBaseQuery = fetchBaseQuery({
   baseUrl: 'http://localhost:5174',
   prepareHeaders: (headers) => {
-    // mock auth token
-    headers.set('authorization', 'Bearer mock-token');
+    // mock auth tocken
+    headers.set('authorization', 'Bearer mock-tocken');
     return headers;
   }
 });
