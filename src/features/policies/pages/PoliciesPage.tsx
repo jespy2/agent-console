@@ -7,6 +7,9 @@ import "../policies.css";
 import { setPage, setSearch, setStatus } from "../state/policiesUiSlice";
 import { selectPoliciesFilters } from "../state/selectors";
 import { useNavigate } from "react-router-dom";
+import { PageSkeleton } from "@/shared/components/FeedBack/PageSkeleton";
+import { ErrorState } from "@/shared/components/FeedBack/ErrorState";
+import { errorMessage } from "@/shared/api/normalizeError";
 
 export const PoliciesPage = () => {
   const navigate = useNavigate();
@@ -20,6 +23,24 @@ export const PoliciesPage = () => {
 		limit,
 	});
 
+	if (isLoading) {
+		return <PageSkeleton title='Policies' />
+	}
+
+	if (error) {
+		return (
+			<ErrorState
+			title='Unable to load policies'
+			message={errorMessage(error)} 
+			onRetry={refetch}
+			/>
+		);
+	};
+
+	if (!data || data.items.length === 0) {
+		return <p>No policies found.</p>
+	}
+
 	return (
 		<section>
 			<h1>Policies</h1>
@@ -31,17 +52,6 @@ export const PoliciesPage = () => {
 				onStatusChange={(value) => dispatch(setStatus(value))}
 				onNewCase={() => console.log("New Case")}
 			/>
-
-			{isLoading && <div>Loading policies...</div>}
-
-			{error && (
-				<div>
-					<p>Something went wrong loading policies.</p>
-					<button type='button' onClick={() => refetch()}>
-						Retry
-					</button>
-				</div>
-			)}
 
 			{!isLoading && !error && (
 				<>

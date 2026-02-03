@@ -6,6 +6,7 @@ import {
 } from "../api/policiesApi";
 import type { PolicyStatus } from "../types";
 import { Modal } from "@/shared/components/Ui/Modal";
+import type { ApiError } from "@/shared/api/types";
 
 export const PolicyDetailPage = () => {
 	const { policyId } = useParams<{ policyId: string }>();
@@ -38,6 +39,14 @@ export const PolicyDetailPage = () => {
 		if (data) setStatus(data.status);
 	}, [data]);
 
+	// disable 'save' after success for a moment
+	useEffect(() => {
+		if (isSuccess) {
+			const t = setTimeout(() => { }, 1000);
+			return () => clearTimeout(t);
+		}
+	}, [isSuccess])
+
 	if (!policyId) {
 		return (
 			<section>
@@ -63,6 +72,7 @@ export const PolicyDetailPage = () => {
 				<h1>Policy</h1>
 				<div role='alert'>
 					<p>We couldn't load this policy.</p>
+					<p>{(error as ApiError).message}</p>
 					<button type='button' onClick={() => refetch()}>
 						Retry
 					</button>
